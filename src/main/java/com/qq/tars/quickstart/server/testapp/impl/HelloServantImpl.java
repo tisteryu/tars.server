@@ -16,12 +16,13 @@
 
 package com.qq.tars.quickstart.server.testapp.impl;
 
-import java.io.IOException;
 import java.util.Properties;
 
 import com.qq.tars.quickstart.server.testapp.HelloServant;
 import com.qq.tars.support.log.Logger;
 import com.qq.tars.support.log.Logger.LogType;
+import com.qq.tars.support.notify.NotifyHelper;
+import com.qq.tars.support.property.PropertyReportHelper;
 
 public class HelloServantImpl implements HelloServant {
 
@@ -35,9 +36,18 @@ public class HelloServantImpl implements HelloServant {
 			Properties prop = new Properties();
 			prop.load(HelloServantImpl.class.getClassLoader().getResourceAsStream("helloServer.conf"));
 			FLOW_LOGGER.info("asdfsafd : " + prop.getProperty("testkey"));
-		} catch (IOException e) {
+			
+			PropertyReportHelper.getInstance().reportPropertyValue("queue_sizes", 100);
+		} catch (Exception e) {
 			FLOW_LOGGER.warn("config load failure");
+			e.printStackTrace();
 		}
+		
+		
+
+		NotifyHelper.getInstance().notifyNormal("notifyNormal");
+		NotifyHelper.getInstance().notifyWarn("notifyWarn");
+		NotifyHelper.getInstance().notifyError("notifyError");
 		return String.format("hello no=%s, name=%s, time=%s", no, name, System.currentTimeMillis());
 	}
 }

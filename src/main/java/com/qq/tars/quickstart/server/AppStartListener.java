@@ -20,6 +20,8 @@ import com.qq.tars.server.core.AppContextEvent;
 import com.qq.tars.server.core.AppContextListener;
 import com.qq.tars.server.core.AppServantEvent;
 import com.qq.tars.support.config.ConfigHelper;
+import com.qq.tars.support.property.PropertyReportHelper;
+import com.qq.tars.support.property.CommonPropertyPolicy.Min;
 
 public class AppStartListener implements AppContextListener {
 
@@ -27,10 +29,11 @@ public class AppStartListener implements AppContextListener {
     public void appContextStarted(AppContextEvent event) {
     	
     	ConfigHelper.getInstance().loadConfig("helloServer.conf");
-
     }
 
     @Override
     public void appServantStarted(AppServantEvent event) {
+    	
+    	PropertyReportHelper.getInstance().createPropertyReporter("queue_sizes" , new Min());
     }
 }
